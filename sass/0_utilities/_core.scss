@@ -1,10 +1,24 @@
 /* Global components map
-=== */
-$components : ();
+======================== */
+
+$components : () !global;
+
+
+/* Mixin to add component
+========================= */
+
+@mixin add-component($componentName, $componentVariationName: "default", $componentVariationOptions: ()) {
+  $components: map-merge($components, (
+      #{$componentName}: (
+        $componentVariationName: $componentVariationOptions
+      )
+  )) !global;
+}
 
 
 /* Mixin to extend global components map
-=== */
+======================================== */
+
 @mixin core-extend($componentName, $componentVariationName, $componentVariationOptions){
     // $components(all) > $component(ex: "inlineList") > $componentVariationName(ex: "dashboardModulesList")
     $components: core-extend($componentName, $componentVariationName, $componentVariationOptions);
@@ -12,7 +26,8 @@ $components : ();
 
 
 /* Utils function to merge component options
-=== */
+============================================ */
+
 @function core-extend($componentName, $componentVariationName, $componentVariationOptions){
     $component: map-get($components, $componentName);
     $componentVariation: map-get($component, $componentVariationName);

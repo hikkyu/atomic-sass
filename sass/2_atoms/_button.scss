@@ -1,0 +1,103 @@
+/* Button Example
+=================
+
+This is a practical example of an atom component.
+
+  <button class="button">
+    <span class="button__text">Awesome Button</span>
+  </button>
+
+*/
+
+
+/* Atom Defintion
+=================
+
+Define here all your placeholder use by the mixin.
+If you prefix it by at shortcut it's easy to find them later by autocompletion.
+You must only use layout properties if you want to use built in skin system.
+
+*/
+
+%at-button {
+  display: inline-block;
+}
+
+%at-button__text {
+  display: block;
+}
+
+
+/* Atom Mixin
+=============
+
+Define here the component in a mixin. This is usefull if you need to expose it with multiple selector
+
+*/
+
+@mixin button($selector: '.button', $skin: 'default') {
+
+  #{$selector} {
+    @extend %at-button;
+
+    &__text {
+      @extend %at-button__text;
+    }
+  }
+
+  @include button-skin($selector, $skin);
+
+}
+
+
+/* Atom default skin Definition
+=============================== */
+
+%at-button-skin-default {
+  border: 1px solid #333;
+}
+
+%at-button__text-skin-default {
+  text-transform: uppercase;
+  color: #fff;
+}
+
+
+/* Atom Skin Mixin
+==================
+
+Define here the skin mixin.
+
+*/
+
+@mixin button-skin($selector, $skin) {
+
+  #{$selector} {
+    @extend %at-button-#{$skin} !optional;
+
+    &__text {
+      @extend %at-button__text-#{$skin} !optional;
+    }
+  }
+
+}
+
+
+/* Atom(s) Declaration(s)
+========================= */
+
+@include add-component("button");
+
+
+/* Expose mixin
+===============
+
+Automatic function to expose all components, the declaration is in _component-expose.scss
+
+*/
+
+@mixin exposeButton() {
+  @each $declaration, $params in map-get($components, "button") {
+    @include button($params...);
+  }
+}
